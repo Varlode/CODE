@@ -8,3 +8,5 @@
 *.pdf
 *.yml
 *.iml
+*.inp
+*.out
