@@ -31,11 +31,10 @@ int main() {
     cin >> q;
     for (int i = 1; i <= q; i++) {
         int req; cin >> req;
+        int x, y; cin >> x >> y;
         if (req == 0) {
-            int x, y; cin >> x >> y;
             update(1, 1, n, x, y);
         } else {
-            int x, y; cin >> x >> y;
             cout << get(1, 1, n, x, y) << endl;
         }
     }
