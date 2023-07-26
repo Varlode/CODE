@@ -11,3 +11,10 @@
 *.inp
 *.out
 *.pas
+*.doc
+*.docx
+*.tmp
+*.ppt
+*.pptx
+*.xls
+*.xlsx
