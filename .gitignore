@@ -1,7 +1,6 @@
 *.exe
 *.txt
 *.o
-*.o
 *.txt
 *.xml
 *.rar
@@ -18,3 +17,4 @@
 *.pptx
 *.xls
 *.xlsx
+*.cfg
