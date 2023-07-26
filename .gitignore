@@ -1,3 +1,10 @@
 *.exe
 *.txt
 *.o
+*.o
+*.txt
+*.xml
+*.rar
+*.pdf
+*.yml
+*.iml
