@@ -17,6 +17,9 @@ void dfs(int dinh, int sum, int cnt) {
 }
 
 int main() {
+    
+    freopen("marathon.inp", "r", stdin);
+    freopen("marathon.out", "w", stdout);
     cin >> N >> K;
     for (int i = 1; i < N; i++) {
         int x, y;
@@ -26,5 +29,5 @@ int main() {
     for (int i = 1; i <= N; i++) {
         dfs(i, 0, 0);
     }
-    (ans == 1e9+9)? cout << -1 : cout << ans;
+    if (ans==1e9+9) cout << -1; else cout << ans;
 }

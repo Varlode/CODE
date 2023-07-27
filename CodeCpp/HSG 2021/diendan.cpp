@@ -16,6 +16,9 @@ int check (int ok) {
 }
 
 int main() {
+    
+    freopen("diendan.inp", "r", stdin);
+    freopen("diendan.out", "w", stdout);
     cin >> T;
     while (T--) {
         cin >> n >> m;

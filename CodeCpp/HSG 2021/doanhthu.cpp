@@ -4,6 +4,9 @@ using namespace std;
 int N, S, a[1009], cnt, ans = 1e9+9;
 
 int main() {
+    
+    freopen("doanhthu.inp", "r", stdin);
+    freopen("doanhthu.out", "w", stdout);
     cin >> N >> S;
     for (int i = 1; i <= N; i++) 
         cin >> a[i];

@@ -23,6 +23,8 @@ int get(int idx, int l, int r, int u, int v) {
 }
 
 int main() {
+    freopen("cophieu.inp", "r", stdin);
+    freopen("cophieu.out", "w", stdout);
     cin >> n;
     for (int i = 1; i <= n; i++) {
         int x; cin >> x;
