@@ -17,14 +17,14 @@ void dfs(int dinh, int sum, int cnt) {
 }
 
 int main() {
-    // freopen("marathon.inp", "r", stdin);
-    // freopen("marathon.out", "w", stdout);
+    freopen("marathon.inp", "r", stdin);
+    freopen("marathon.out", "w", stdout);
 
     cin >> N >> K;
     for (int i = 1; i < N; i++) {
-        int x, y;
-        cin >> x >> y >> dsK[x][y];
-        dsK[y][x] = dsK[x][y];
+        int x, y, z;
+        cin >> x >> y >> z;
+        dsK[y][x] = dsK[x][y] = z;
     }
     for (int i = 1; i <= N; i++) {
         dfs(i, 0, 0);

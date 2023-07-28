@@ -29,6 +29,8 @@ string op(string a, string b) {
 }
 
 int main() {
+    freopen("sonnen.inp", "r", stdin);
+    freopen("sonnen.out", "w", stdout);
     cin >> n;
     s1 = s2 = '1';
     sn = '\0';
