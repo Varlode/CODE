@@ -17,9 +17,9 @@ void dfs(int dinh, int sum, int cnt) {
 }
 
 int main() {
-    
-    freopen("marathon.inp", "r", stdin);
-    freopen("marathon.out", "w", stdout);
+    // freopen("marathon.inp", "r", stdin);
+    // freopen("marathon.out", "w", stdout);
+
     cin >> N >> K;
     for (int i = 1; i < N; i++) {
         int x, y;

@@ -6,7 +6,7 @@ int o1, o2, o3, o4, n, cnt[4];
 int check(int f) {
     if (0 <= f && f <= 10) return 1;
     if (10 <= f && f <= 100) return 2;
-    if (100 <= && f <= 255) return 3;
+    if (100 <= f && f <= 255) return 3;
 }
 
 int main() {

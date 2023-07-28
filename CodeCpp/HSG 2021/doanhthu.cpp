@@ -8,22 +8,13 @@ int main() {
     freopen("doanhthu.inp", "r", stdin);
     freopen("doanhthu.out", "w", stdout);
     cin >> N >> S;
-    for (int i = 1; i <= N; i++) 
+    for (int i = 1; i <= N; i++) {
         cin >> a[i];
-    int l = 1, r = 1, s = 0;
-    while (r <= N) {
-        s += a[r];
-        if (s >= S) {
-            while (s >= S) {
-                ans = min(ans, r - l + 1);
-                s -= a[l];
-                l++;
+        a[i] += a[i-1];
+        for (int j = 0; j < i; j++) 
+            if (a[i] - a[j] >= S) {
+                ans = min(ans, i-j);
             }
-        } else if (s < 0) {
-            s = 0;
-            l = r + 1;
-        }
-        r++;
     }
     (ans != 1e9+9)? cout << ans : cout << -1;
 }
