@@ -2,7 +2,7 @@
 using namespace std;
 
 const int maxN = 1009;
-int a[maxN][maxN];
+long long a[maxN][maxN];
 int m, n;
 
 int main() {

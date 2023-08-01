@@ -2,8 +2,9 @@
 using namespace std;
 
 const int maxN = 1009;
-int maxD[maxN], minD[maxN], maxC[maxN], minC[maxN], sumC, sumD;
-int n, a[maxN], ans = 0;
+long long maxD[maxN], minD[maxN], maxC[maxN], minC[maxN], sumC, sumD;
+int n, a[maxN];
+long long ans = 0;
 
 int main() {
     freopen("dseq.inp", "r", stdin);

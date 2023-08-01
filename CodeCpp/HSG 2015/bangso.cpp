@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int n, pre_sum = 0, a, sum, ans = -1e9-9;
+long long n, pre_sum = 0, a, sum, ans = -1e9-9;
 
 int main() {
     freopen("bangso.inp", "r", stdin);

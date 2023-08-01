@@ -2,8 +2,9 @@
 using namespace std;
 
 const int maxN = 1009;
-int m, n, x, y, ans;
-int a[maxN][maxN];
+int m, n, x, y;
+long long ans;
+long long a[maxN][maxN];
 
 int dfs(int i, int j, int cnt) {
     if (i < 1 || m < i) return cnt-1;

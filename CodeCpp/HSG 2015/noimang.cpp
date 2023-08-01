@@ -2,7 +2,8 @@
 using namespace std;
 
 const int maxN = 1009;
-int n, m, cnt = 0, ans = 1e9+9;
+int n, m, cnt = 0;
+long long ans = 1e9+9;
 int a[maxN][maxN], u[maxN], vstd[maxN];
 vector<int> v[maxN];
 
@@ -13,7 +14,7 @@ void lt(int c) {
     }
 }
 
-void dfs(int c, int s, int k) {
+void dfs(int c, long long s, int k) {
     if (k == cnt) {
         ans = min(s, ans);
         return;
