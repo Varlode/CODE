@@ -10,7 +10,6 @@ int main() {
     cin >> m;
     while (m--) {
         cin >> n;
-        fill(a, a+n+1, 0);
         ans = 0;
         map<int, int> l;
         for (int i = 1; i <= n; i++) {
