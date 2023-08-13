@@ -1,62 +1,73 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-const int maxN = 1009;
-int n, m, cnt = 0;
-long long ans = 1e9+9;
-int a[maxN][maxN], u[maxN], vstd[maxN];
-vector<int> v[maxN];
+const int maxN=1e3+9;
+int n, m, c[maxN][maxN], e[maxN][maxN], id[maxN], vstd[maxN], d[maxN];
+long long ans = 0;
+vector<int> lt;
+priority_queue<
+    pair<int, int>,
+    vector<pair<int, int> >,
+    greater<pair<int, int> > 
+> pq;
 
-void lt(int c) {
-    u[c] = cnt;
-    for (int i = 0; i < v[c].size(); i++) {
-        if (u[v[c][i]] == 0) lt(v[c][i]);
+void dijkstra(int a) {
+    vstd[a] = 1;
+    
+    for (int i = 0; i < lt.size(); i++) if (vstd[lt[i]] == 0) {
+        pq.push(make_pair(e[a][lt[i]], lt[i]));
     }
+
+    while (pq.size() && vstd[pq.top().second]) pq.pop(); if (pq.empty()) return;
+    pair<int, int> tmp = pq.top(); pq.pop();
+    ans += tmp.first;
+    dijkstra(tmp.second);
 }
 
-void dfs(int c, long long s, int k) {
-    if (k == cnt) {
-        ans = min(s, ans);
-        return;
+void lienthong(int a, int b) {
+    if (b < a) swap(a, b);
+    if (id[a] == id[b]) return;
+    for (int i = 1; i <= n; i++) {
+        if (id[i] == id[b]) id[i] = id[a];
     }
-    vstd[c] = 1;
-    
-    for (int i = 1; i <= cnt; i++) {
-        if (vstd[i] == 0 && s + a[c][i] < ans) {
-            dfs(i, s + a[c][i], k+1);
-        }
-    }
-    vstd[c] = 0;
 }
 
 int main() {
     freopen("noimang.inp", "r", stdin);
     freopen("noimang.out", "w", stdout);
-    // ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
     cin >> n >> m;
-    for (int i = 1; i <= m; i++) {
-        int x, y; cin >> x >> y;
-        v[x].push_back(y);
-        v[y].push_back(x);
+    for (int i = 1; i <= n; i++) id[i] = i;
+
+    for (int i = 1; i<=m; i++) {
+        int x, y; 
+        cin >> x >> y;
+        lienthong(x, y);
     }
-    for (int i = 1; i <= n; i++) {
-        if (u[i] == 0) {
-            cnt++;
-            lt(i);
-        }
-    }
+    for (int i = 1; i <= n; i++) if (id[i] == i) lt.push_back(i);
+
+    // cout << endl;
+    // for (int i = 1; i <= n; i++) cout << id[i] << ' '; cout << endl;
+    // for (int i = 0; i < lt.size(); i++) cout << lt[i] << ' '; cout << endl;
+    // cout << endl;
+
     for (int i = 1; i <= n; i++) {
         for (int j = 1; j <= n; j++) {
-            int c; cin >> c;
-            if (a[u[i]][u[j]] == 0) a[u[i]][u[j]] = c;
-            else a[u[i]][u[j]] = min(a[u[i]][u[j]], c);
+            cin >> c[i][j];
+            if (e[id[i]][id[j]] == 0) e[id[i]][id[j]]=c[i][j];
+            e[id[i]][id[j]] = min(e[id[i]][id[j]], c[i][j]);
         }
     }
-    if (cnt == 1) {
-        cout << 0;
-        return 0;
-    }
-    for (int i = 1; i <= cnt; i++)
-        dfs(i, 0, 1);
+
+    // cout << endl;
+    // for (int i = 0; i < lt.size(); i++) {
+    //     for (int j = 0; j < lt.size(); j++) {
+    //         cout << e[lt[i]][lt[j]] << ' ';
+    //     }
+    //     cout << endl;
+    // }
+    // cout << endl;
+
+    for (int i = 1; i < lt.size(); i++) d[lt[i]] = 1e9;
+    dijkstra(lt[0]);
     cout << ans;
 }
