@@ -2,7 +2,7 @@
 using namespace std;
 
 const int maxN=1e3+9;
-int n, m, c[maxN][maxN], e[maxN][maxN], id[maxN], vstd[maxN], d[maxN];
+int n, m, x, e[maxN][maxN], id[maxN], vstd[maxN];
 long long ans = 0;
 vector<int> lt;
 priority_queue<
@@ -52,9 +52,9 @@ int main() {
 
     for (int i = 1; i <= n; i++) {
         for (int j = 1; j <= n; j++) {
-            cin >> c[i][j];
-            if (e[id[i]][id[j]] == 0) e[id[i]][id[j]]=c[i][j];
-            e[id[i]][id[j]] = min(e[id[i]][id[j]], c[i][j]);
+            cin >> x;
+            if (e[id[i]][id[j]] == 0) e[id[i]][id[j]]=x;
+            e[id[i]][id[j]] = min(e[id[i]][id[j]], x);
         }
     }
 
@@ -67,7 +67,6 @@ int main() {
     // }
     // cout << endl;
 
-    for (int i = 1; i < lt.size(); i++) d[lt[i]] = 1e9;
     dijkstra(lt[0]);
     cout << ans;
 }
