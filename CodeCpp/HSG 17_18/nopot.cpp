@@ -1,47 +1,73 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-const int maxN = 1e5+9;
-int T, n, m, q;
+const int maxN=1e5+9, int maxM=1e6+9;
+int n, m, q;
+vector<int> adj[maxN], val[maxN];
+priority_queue<
+    pair<int, int>
+> pq1, pq2;
 
-void dijkstra(int a) {
+struct edges {
+    int u, v, w, c;
+} e[maxM];
+
+struct DSU {
+    int par[maxN], sz[maxN];
+
+    void init() {
+        for (int i = 1; i <= n; i++) {
+            par[i] = i;
+            sz[i] = i;
+        }
+    }
+
+    int find(int u) {
+        if (par[u] == u) return u;
+        return par[u] = find(par[u]);
+    }
+
+    bool join(int u, int v) {
+        u = find(u); v  = find(v);
+        if (u == v) return false;
+        if (sz[u] >= sz[v]) {
+            par[v] = u;
+            sz[u] += sz[v];
+        }
+        else {
+            par[u] = v;
+            sz[v] += sz[u];
+        }
+        return true;
+    }
+} dsu;
+
+void kruskal() {
 
 }
 
 int main() {
-    cin >> T;
-    while (T--) {
-        cin >> n >> m >> q;
+    dsu.init();
+    cin >> n >> m >> q;
 
-        priority_queue<
-            pair<int, int>,
-            vector<pair<int, int> >,
-            greater<pair<int, int> >
-        > pq;
-        vector<int> adj[n+9], e[n+9], id[n+9];
-        int x[n+9], y[n+9], z[n+9], u[n+9];
-        int d[n+9], vstd[n+9], t[109], c[109];
+    for (int i = 1; i <= m; i++) {
+        cin >> e[i].u >> e[i].v >> e[i].w;
+    }
 
-        for (int i = 1; i <= n; i++)
-            cin >> x[i] >> y[i] >> z[i];
-        for (int i = 1; i <= n; i++) {
-            d[i] = 1e9+9;
-            vstd[i] = 0;
-            u[i] = 0;
+    for (int i = 1; i <= q; i++) {
+        int k, s; cin >> k >> s;
+        int t[s], c[s];
+        // init
+        for (int j = 0; j < s; i++) {
+            cin >> t[j] >> c[j];
+            e[t[j]].c = c[j];
         }
-        d[1] = 0;
-        dijkstra(1);
-        int k, s;
-        for (int i = 1; i <= q; i++) {
-            cin >> k >> s;
-            for (int i = 1; i <= s; i++) 
-                cin >> t[i] >> c[i];
-            for (int i = 1; i <= n; i++) {
-                
-            }
 
-            for (int i = 1; i <= s; i++)
-                u[t[i]] = 0;
+        kruskal();
+
+        // end
+        for (int j = 0; j < s; i++) {
+            e[t[j]] = 0;
         }
     }
 }

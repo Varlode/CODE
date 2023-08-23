@@ -65,7 +65,7 @@ int main() {
                 sum[flag[i]]--;
                 s[flag[i]][i]--;
                 plus_5[i+1]++;
-            }
+            } else break;
             i++;
             continue;
         }
@@ -74,7 +74,7 @@ int main() {
                 sum[3-flag[i]]--;
                 s[3-flag[i]][i]--;
                 plus_5[i+1]++;
-            }
+            } else break;
             i++;
             continue;
         }
