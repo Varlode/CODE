@@ -15,6 +15,9 @@ void print(string tmp) {
 }
 
 int main() {
+    int t; cin >> t;
+    while (t--) {
+    s[0] = s[1] = s[2] = "";
     cin >> s[0];
     int n = s[0].size();
     flag[n] = 1;
@@ -42,9 +45,8 @@ int main() {
     }
 
     if (sum[1] == sum[2]) {
-        cout << "YES" << endl;
-        print(s[1]); cout << ' '; print(s[2]);
-        return 0;
+        print(s[1]); cout << ' '; print(s[2]); cout << endl;
+        continue;
     }
     
     int i = 0;
@@ -79,6 +81,7 @@ int main() {
             continue;
         }
     }
-    if (plus_5[n]) cout << "NO" << endl;
-    else cout << "YES\n"; print(s[1]); cout << ' '; print(s[2]);
+    if (plus_5[n]) cout << "-1" << endl;
+    else {print(s[1]); cout << ' '; print(s[2]); cout << endl;}
+    }
 }
