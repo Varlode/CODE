@@ -15,7 +15,7 @@ int find_set(int v) {
     return v == par[v] ? v : par[v] = find_set(par[v]);
 }
 
-void union_sets(int a, int b) {
+void join(int a, int b) {
     a = find_set(a);
     b = find_set(b);
     if (a != b) {
@@ -23,4 +23,11 @@ void union_sets(int a, int b) {
         par[b] = a;
         sz[a] += sz[b]; // Cập nhật kích cỡ của cây mới gộp lại
     } 
+}
+
+int main() {
+    build_sets();
+    join(1, 2);
+    join(2, 3);
+    for (int i = 1; i <= 3; i++) cout << par[i] << ' ';
 }
