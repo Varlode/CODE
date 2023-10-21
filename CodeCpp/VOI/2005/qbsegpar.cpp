@@ -6,28 +6,31 @@ const int limit = 500000000;
 int n, k;
 int a[N], f[N], g[N];
 
-void reset() {
+void reset(int m) {
     for (int i = 1; i <= n; i++) {
-        f[i] = n+1;
+        f[i] = n+10;
         g[i] = 0;
     }
 }
 
+void update(int u) {
+    int idx = u;
+    
+}
+
 bool check(int m) {
-    reset();
+    reset(m);
     for (int i = 1; i <= n; i++) {
         for (int j = 0; j < i; j++) 
-            if (a[i]-a[j] <= m) f[i] = min(f[i], f[j]);
-        f[i]++;
+            if (a[i]-m <= a[j])
+                f[i] = min(f[i], f[j] + 1);
     }
-
     for (int i = 1; i <= n; i++) {
-        for (int j = 0; j < i; j++) 
-            if (a[i]-a[j] <= m) g[i] = max(g[i], g[j]);
-        g[i]++;
+        for (int j = 0; j < i; j++)
+            if (a[i]-m <= a[j])
+                g[i] = max(g[i], g[j] + 1);
     }
-
-    return (f[n] <= m && m <= g[n]);
+    return (f[n] <= k && k <= g[n]);
 }
 
 int main() {
