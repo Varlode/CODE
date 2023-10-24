@@ -5,36 +5,36 @@ int n;
 double a, b;
 const int N = 1e6;
 
-vector<pair<double, int> > trump, biden;
+vector<double> trump, biden;
 
 int main() {
     cin >> n;
     for (int i = 0; i < n; i++) {
         cin >> a >> b;
-        trump.push_back({a, i});
-        biden.push_back({b, i});
+        trump.push_back(a-1);
+        biden.push_back(b-1);
     }
-    sort(trump.begin(), trump.end(), greater<pair<double, int> >());
-    sort(biden.begin(), biden.end(), greater<pair<double, int> >());
+    sort(trump.begin(), trump.end(), greater<double>());
+    sort(biden.begin(), biden.end(), greater<double>());
+    // cout << endl;
+    // cout << trump[0] << ' ' << biden[0] << endl;
+    for (int i = 1; i < n; i++) {
+        trump[i] += trump[i-1];
+        biden[i] += biden[i-1];
+        // cout << trump[i] << ' ' << biden[i] << endl;
+    }
+    // cout << endl;
 
-    double ans = 0;
-    double sum_trump = 0, sum_biden = 0;
-    int cnt_trump = 0, cnt_biden = 0;
-
+    double ans = max(0.0, min(trump[0], biden[0]) - 2.0);
     for (int i = 0; i < n; i++) {
-        sum_biden = 0;
-        cnt_biden = 0;
-        cnt_trump++;
-        sum_trump += trump[i].first;
-        // for (int k = 0; k <= i; k++) cout << trump[k].first << ' '; cout << endl;
-        for (int j = 0; j < n; j++) {
-            // cout << biden[j].first << ' ';
-            cnt_biden++;
-            sum_biden += biden[j].first;
-            ans = max(ans, min(sum_biden, sum_trump)-(cnt_trump+cnt_biden));
+        if (trump[i] < 1) continue;
+        if (trump[i] > n) {
+            ans = max(ans, min(trump[i]-n, biden[n-1]-(i+1)));
+            continue;
         }
-        // cout << ans << endl;
+        // cout << trump[i]-(floor(trump[i])) << ' ' << biden[floor(trump[i])-1]-(i+1) << endl;
+        ans = max(ans, min(trump[i]-(floor(trump[i])), biden[floor(trump[i])-1]-(i+1)));
     }
-
+    // cout << endl;
     cout << fixed << setprecision(4) << ans;
 }
