@@ -16,7 +16,6 @@ int kount() {
         int l = k, r;
         for (r = k; r <= n; r++) if (a[r] == b[r]) break; r--;
         k = r;
-        if (l == r) cnt++; else
         while (l < r) {
             if (b[l] != a[l+1] && b[r] != a[r-1]) {
                 cnt += 2; 
@@ -28,19 +27,20 @@ int kount() {
             } else {
                 if (b[l] == a[l+1]) cnt += 2; else cnt++;
                 if (b[r] == a[r-1]) cnt += 2; else cnt++;
-                if (l+1 == r-1) cnt--;
+                if (b[l] == a[l+1] && b[r] == a[r-1]) cnt--;
                 l++; r--;
             }
             if (cnt >= ans) return 1e9;
         }
+        if (l == r) cnt++;
     }
     return cnt;
 }
 
 void build(int i, int j) {
     for (int k = 1; k <= n; k++) {
-        if (k&1) b[k] = real_vector[i].second;
-        else b[k] = real_vector[j].second;
+        if (k&1) b[k] = dt[i];
+        else b[k] = dt[j];
     }
 }
 
@@ -54,10 +54,10 @@ void solve() {
     }
     sort(dt.begin(), dt.end());
     dt.erase(unique(dt.begin(), dt.end()), dt.end());
-    for (int i: dt) real_vector.push_back({um[i], i});
-    sort(real_vector.begin(), real_vector.end(), greater<pair<int, int>>());
+    // for (int i: dt) real_vector.push_back({um[i], i});
+    // sort(real_vector.begin(), real_vector.end(), greater<pair<int, int>>());
     
-    for (int i = 0; i < real_vector.size(); i++) for (int j = i+1; j < real_vector.size(); j++) {
+    for (int i = 0; i < dt.size(); i++) for (int j = i+1; j < dt.size(); j++) {
         build(i, j);
         ans = min(ans, kount());
         build(j, i);
@@ -68,8 +68,8 @@ void solve() {
 
 int main() {
     ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-    freopen("luxtable.inp", "r", stdin);
-    freopen("luxtable.out", "w", stdout);
+    // freopen("luxtable.inp", "r", stdin);
+    // freopen("luxtable.out", "w", stdout);
     int t; cin >> t;
     while (t--) {
         solve();

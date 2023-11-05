@@ -1,44 +1,37 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n, l, r, k;
-int a[1010];    
-int dpR[110][110][2510], dpL[110][110][2510];
+int n, L, R, K;
+int a[101], dpL[101][101][2501], dpR[101][101][2501]; 
+
+void init() {
+    cin >> n >> L >> R >> K;
+    K = min(n*n/4, K);
+    for (int i = 1; i <= n; i++) cin >> a[i];
+}
+
+void solve() {
+    int sum = 0, ans;
+    for (int i = L; i <= R; i++) sum += a[i];
+    for (int i = 1; i < L; i++) for (int j = L; j <= R; j++) for (int k = 0; k <= K; k++) {
+        dpL[i][j][k] = min({dpL[i][j][k], dpL[i-1][j][k], dpL[i][j-1][k], dpL[i][j][k-1]});
+        if (k >= (j-i)) dpL[i][j][k] = min(dpL[i][j][k], dpL[i-1][j-1][k-(j-i)] - a[j] + a[i]);
+    }
+    for (int i = n; i > R; i--) for (int j = R; j >= L; j--) for (int k = 0; k <= K; k++) {
+        dpR[i][j][k] = min({dpR[i][j][k], dpR[i+1][j][k], dpR[i][j+1][k], dpR[i][j][k-1]});
+        if (k >= (i-j)) dpR[i][j][k] = min(dpR[i][j][k], dpR[i+1][j+1][k-(i-j)] - a[j] + a[i]);
+    }
+    ans = min(dpL[L-1][R][K], dpR[R+1][L][K]);
+    for (int i = L; i < R; i++) for (int k = 0; k <= K; k++)
+        ans = min(ans, dpL[L-1][i][k]+dpR[R+1][i+1][K-k]);
+    cout << sum+ans;
+}
 
 int main() {
     ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-    memset(dpR, 0, sizeof dpR);
-    memset(dpL, 0, sizeof dpL);
-    freopen("debt.inp", "r", stdin);
-    freopen("debt.out", "w", stdout);
-    cin >> n >> l >> r >> k;
-    k = min(k, n*n/4);
-    for (int i = 1; i <= n; i++) cin >> a[i];
-
-    for (int i = 1; i < l; i++) 
-        for (int j = l; j <= r; j++) 
-            for (int t = 0; t <= k; t++) {
-                dpL[i][j][t] = min(dpL[i][j][t], dpL[i-1][j][t]);
-                dpL[i][j][t] = min(dpL[i][j][t], dpL[i][j-1][t]);
-                dpL[i][j][t] = min(dpL[i][j][t], dpL[i][j][t-1]);
-                if (t >= abs(i-j)) dpL[i][j][t] = min(dpL[i][j][k], dpL[i-1][j-1][t-abs(i-j)] + a[i] - a[j]); 
-            }
-        
-    for (int i = n; i > r; i--) 
-        for (int j = r; j >= l; j--) 
-            for (int t = 0; t <= k; t++) {
-                dpR[i][j][t] = min(dpR[i][j][t], dpR[i+1][j][t]);
-                dpR[i][j][t] = min(dpR[i][j][t], dpR[i][j+1][t]);
-                dpR[i][j][t] = min(dpR[i][j][t], dpR[i][j][t-1]);
-                if (t >= abs(i-j)) dpR[i][j][t] = min(dpR[i][j][t], dpR[i+1][j+1][t-abs(i-j)] + a[i] - a[j]); 
-            }
-
-    long long sum = 0, ans = 1e9;
-    for (int i = l; i <= r; i++) sum += a[i];
-
-    for (int i = l-1; i <= r+1; i++) 
-        for (int t = 0; t <= k; t++) {
-            ans = min(ans, sum + dpL[l-1][i-1][t] + dpR[r+1][i][k-t]);
-        }   
-    cout << ans;
-}
+    #define TASK "debt"
+    freopen(TASK".inp", "r", stdin);
+    freopen(TASK".out", "w", stdout);   
+    init();
+    solve();
+}   
