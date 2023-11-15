@@ -2,7 +2,6 @@
 using namespace std;
 
 #define ii pair<int, int>
-#define ipi pair<int, ii>
 #define fi first
 #define se second
 
@@ -13,27 +12,26 @@ int a[N][N], vis[N][N], d[N][N];
 int dx[] = {0, 1, 0, -1};
 int dy[] = {1, 0, -1, 0};
 
-priority_queue<ipi, vector<ipi>, greater<ipi> > pq;
+queue<ii> q;
 
 bool check(int x, int y) {
     return (1 <= x && x <= m && 1 <= y && y <= n && a[x][y] >= 0);
 }
 
-bool dijkstra(int x, int y) {
-    pq.push({1, {x, y}});
-    while (pq.size()) {
-        auto [val, p] = pq.top(); pq.pop();
-        x = p.first; y = p.second;
+bool bfs(int x, int y) {
+    q.push({x, y});
+    while (q.size()) {
+        auto [x, y] = q.front(); q.pop();
         vis[x][y] = true;
-        d[x][y] = val;
         if (x == u && y == v)
             return true;
         for (int i = 0; i < 4; i++) {
-            if (vis[x+dx[i]][y+dy[i]] == 0 && (check(x+dx[i], y+dy[i]))) 
-                pq.push({1 + val, {x+dx[i], y+dy[i]}});
+            if (vis[x+dx[i]][y+dy[i]] == 0 && (check(x+dx[i], y+dy[i]))) {
+                d[x+dx[i]][y+dy[i]] = d[x][y] + 1;
+                q.push({x+dx[i], y+dy[i]});
+            }
         }
-        while (pq.size() && vis[pq.top().se.fi][pq.top().se.se]) pq.pop();
-        if (pq.empty()) return false;
+        while (q.size() && vis[q.front().fi][q.front().se]) q.pop();
     }
     return false;
 }
@@ -46,10 +44,11 @@ int main() {
     }
     
     int x, y;
-    cin >> m >> n >> y >> x >> v >> u;
+    cin >> m >> n >> x >> y >> u >> v;
     for (int i = 1; i <= m; i++) for (int j = 1; j <= n; j++) {
         cin >> a[i][j];
     }
-    if (dijkstra(x, y)) cout << d[u][v];
+    d[x][y] = 1;
+    if (bfs(x, y)) cout << d[u][v];
     else cout << -1;
 }
