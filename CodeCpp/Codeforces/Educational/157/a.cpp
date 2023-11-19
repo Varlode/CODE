@@ -10,8 +10,11 @@ int main() {
     }
     int t; cin >> t;
     while (t--) {
-        int n; cin >> n;
-        if (n%3 != 0) cout << "First\n";
-        else cout << "Second\n";
+        int x, y, k; cin >> x >> y >> k;
+        if (x >= y) cout << x << '\n';
+        else {
+            if (x+k >= y) cout << y << '\n';
+            else cout << y+(y-x-k) << '\n';
+        }
     }
 }

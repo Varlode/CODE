@@ -50,7 +50,7 @@ using namespace std;
 // Tên chương trình
 const string NAME = "TASK";
 // Số test kiểm tra
-const int NTEST = 100;
+const int NTEST = 1000;
 
 mt19937 rd(chrono::steady_clock::now().time_since_epoch().count());
 #define rand rd
@@ -70,21 +70,21 @@ int main()
     {
         ofstream inp((NAME + ".inp").c_str());
         // Code phần sinh test ở đây
-        long long n = Rand(1, 1e5), d = (1, 1e9);
-        inp << n << ' ' << d << '\n';
-        for (int i = 1; i <= n; i++) inp << Rand(1, 1e9) << ' ' << Rand(1, 1e9) << '\n';
+        int n = Rand(0, 0);
+        inp << n << '\n';
+        for (int i = 1; i <= n; i++) 
+            inp << Rand(-1e9, 1e9) << ' ';
         inp.close();
         system((NAME + ".exe").c_str());
-        // system((NAME + "_trau.exe").c_str());
-        // ofstream out((NAME + ".ans").c_str());
-        // if (system(("fc " + NAME + ".out " + NAME + ".ans").c_str()) == 0)
-        // {
-        //     out << "Test " << iTest << ": WRONG!\n";
-        //     continue;
-        // }
-        // out << "Test " << iTest << ": CORRECT!\n";
-        // soTestDung++;
+        system((NAME + "_trau.exe").c_str());
+        if (system(("fc " + NAME + ".out " + NAME + ".ans").c_str()) == 0)
+        {
+            ofstream out((NAME + ".ans").c_str());
+            out << "Test " << iTest << ": WRONG!\n";
+            return 0;
+        }
+        ofstream out((NAME + ".ans").c_str());
+        out << "Test " << iTest << ": CORRECT!\n";
     }
-    cerr << soTestDung << '/' << NTEST;
     return 0;
 }

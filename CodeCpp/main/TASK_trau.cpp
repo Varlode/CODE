@@ -49,14 +49,23 @@ using namespace std;
 #pragma GCC optimize("-fdelete-null-pointer-checks")
 #pragma GCC target("avx,avx2,sse,sse2,sse3,ssse3,sse4,sse4.1,sse4.2,mmx,abm")
 
-#define int long long
+const int N = 1e6;
+long long pref[N];
 
 main() {
     ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
     #define TASK "TASK"
-    if (fopen(TASK".inp", "r")) {
-        freopen(TASK".inp", "r", stdin);  
-        freopen(TASK".ans", "w", stdout);
+    freopen(TASK".inp", "r", stdin);  
+
+    int n; cin >> n;
+    for (int i = 1; i <= n; i++) {
+        long long a; cin >> a;
+        pref[i] = pref[i-1] + a;
     }
-    
+    long long ans = -1e18;
+    for (int i = 1; i <= n; i++) for (int j = i; j <= n; j++) {
+        ans = max(ans, pref[j] - pref[i-1]);
+    }
+    freopen(TASK".ans", "w", stdout);
+    cout << ans;
 }

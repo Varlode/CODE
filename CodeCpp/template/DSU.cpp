@@ -1,33 +1,28 @@
-#include<bits/stdc++.h>
-using namespace std;
+struct DSU {
+    #define T_DSU int
+    vector<T_DSU> lab;
 
-const int N = 1e5+9;
-int par[N], sz[N];
+    DSU(int n): lab(n+10) {};
 
-void build_sets() {
-    for (int i = 0; i < N; i++) {
-        par[i] = i;
-        sz[i] = 1;
+    void build() {
+        for (int i = 1; i <= n; i++) lab[i] = -1;
     }
-}
 
-int find_set(int v) {
-    return v == par[v] ? v : par[v] = find_set(par[v]);
-}
+    int find(int u) {
+        return lab[u] <= 0? u: lab[u] = find(lab[u]);
+    }
 
-void join(int a, int b) {
-    a = find_set(a);
-    b = find_set(b);
-    if (a != b) {
-        if (sz[a] < sz[b]) swap(a, b); // Đặt biến a là gốc của cây có kích cỡ lớn hơn
-        par[b] = a;
-        sz[a] += sz[b]; // Cập nhật kích cỡ của cây mới gộp lại
-    } 
-}
-
-int main() {
-    build_sets();
-    join(1, 2);
-    join(2, 3);
-    for (int i = 1; i <= 3; i++) cout << par[i] << ' ';
-}
+    bool join(int u, int v) {
+        u = find(u);
+        v = find(v);
+        if (u != v) {
+            if (lab[u] > lab[v]) swap(u, v);
+            lab[u] += lab[v];
+            lab[v] = u;
+            return true;
+        } 
+        return false;
+    }
+    
+};
+DSU dsu(n);

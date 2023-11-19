@@ -2,41 +2,56 @@
 using namespace std;
 
 #define pi pair<int, int>
-#define ppi pair<pi, pi>
-const int N = 1010;
-int d[3], m, n, k;
-int o[N][N], dp[N][N];
-int vis[N][N][3][3];
-queue<ppi> q;
 
-bool checkCam(int x, int y, int u, int v) {
-    return (o[x][y] - o[x-1][v] - o[u][y-1] + o[x-1][v-1] == 0);
-}
+const int N = 505;
+int n;
+int e[N][N], d[N*N], vis[N*N];
+vector<pi> edges, ans_e;
 
-void bfs() {
-    q.push({{1, 1}, {0, 1}});
-    while (q.size()) {
-        auto [p1, p2] = q.front(); q.pop();
-        auto [x, y] = p1;
-        auto [d1, d2] = p2;
-        if (vis[x][y][d1][d2]) continue;
-        vis[x][y][d1][d2] = 1;
-        // lat phai
-        if ()
-        // lat trai
-        
-        // lat len
-        
-        // lat phai
-        
-        // sang phai
+struct vertex {
+    int id;
+    vertex(int n) {id = n;}
+    friend bool operator < (const vertex a, const vertex b) {
+        return d[a.id] > d[b.id];
+    }
+};
+priority_queue<vertex> pq;
 
-        // sang trai
-
-        // len 
-
-        // xuong
-
+void solve() {
+    cin >> n;
+    for (int i = 1; i <= n; i++) for (int j = 1; j <= n; j++) {
+        cin >> e[i][j];
+        if (i != j) edges.push_back({i, j});
+    }
+    for (int i = 1; i <= n; i++) d[i] = e[i][i];
+    int numNodes = n;
+    sort(edges.begin(), edges.end(), [&] (auto a, auto b) {
+        return e[a.first][a.second] < e[b.first][b.second];
+    });
+    for (auto p: edges){
+        int u = p.first, v = p.second;
+        if (vis[u] || vis[v]) continue;
+        d[++numNodes] = e[u][v];
+        ans_e.push_back({u, numNodes});
+        ans_e.push_back({v, numNodes});
+        pq.push(numNodes);
+        vis[u] = vis[v] = 1;
+    }
+    for (int i = 1; i <= n; i++) if (vis[i] == 0) pq.push(i);
+    
+    while (pq.size() >= 2) {
+        vertex u = pq.top(); pq.pop();
+        vertex v = pq.top(); pq.pop();
+        d[++numNodes] = max(d[u.id], d[v.id]) + 1;
+        ans_e.push_back({v.id, numNodes});
+        ans_e.push_back({u.id, numNodes});
+        pq.push(numNodes);
+    }
+    cout << numNodes << '\n';
+    for (int i = 1; i <= numNodes; i++) cout << d[i] << ' '; cout << '\n';
+    cout << pq.top().id << '\n';
+    for (auto p: ans_e) {
+        cout << p.first << ' ' << p.second << '\n';
     }
 }
 
@@ -47,12 +62,7 @@ int main() {
         freopen(TASK".inp", "r", stdin);
         freopen(TASK".out", "w", stdout);
     }
-    cin >> d[0] >> d[1] >> d[2] >> m >> n >> k;
-    for (int i = 1; i <= k; i++) {
-        int x, y; cin >> x >> y;
-        o[x][y] = 1;
-    }
-    for (int i = 1; i <= m; i++) for (int j = 1; j <= m; j++) 
-        o[i][j] += o[i][j-1] + o[i-1][j] - o[i-1][j-1];
-    bfs();
+    int t = 1;
+    // cin >> t;
+    while (t--) solve();
 }
