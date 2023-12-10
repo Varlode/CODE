@@ -1,24 +1,49 @@
-#include<bits/stdc++.h>
+/*
+          _
+   ______/ \-.   _         _ __ _         _    _
+.-/     (    o\_//        / l..l \       / >--< \
+ l  ___  \_/\---'         \/ ll \/       \l  \ l/
+ l_ll  l_ll                l_''_l         l_ll_l
+
+*/
+
+#include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-    // freopen("input.txt", "r", stdin);
-    // freopen("output.txt", "w", stdout);
-    int n, h; cin >> n >> h;
-    int c[2][n / 2];
-	map<int, int> count;
-    for (int i = 0; i < n; i++) cin >> c[i % 2][i / 2];
-	n /= 2; sort(c[0], c[0] + n); sort(c[1], c[1] + n);
-	
-	int res = INT_MAX;
-	for (int i = 0; i < h; i++) {
-		int s = n - (upper_bound(c[0], c[0] + n, i) - c[0]);
-		s += n - (upper_bound(c[1], c[1] + n, h - i - 1) - c[1]);
-		++count[s];
-		res = min(res, s);
-	}
-	cout << res << " " << count[res];
+const int N = 5e5+10;
+int n, h;
+int cnt[N], mark[N];
+
+void solve() {
+    cin >> n >> h;
+    for (int i = 1; i <= n; i++) {
+        int a; cin >> a;
+        if (i&1) {
+            mark[1]++;
+            mark[a+1]--;
+        }
+        else mark[h-a+1]++;
+
+    }
+    int ans = 1e9;
+    for (int i = 1; i <= h; i++) {
+        mark[i] += mark[i-1];
+        cnt[mark[i]]++;
+        ans = min(ans, mark[i]);
+    }
+    cout << ans << ' ' << cnt[ans];
 }
 
+int main() {
+    ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+    #define TASK "TASK"
+    if (fopen(TASK".inp", "r")) {
+        freopen(TASK".inp", "r", stdin);
+        freopen(TASK".out", "w", stdout);
+    }
+    int t = 1;
+    // cin >> t;
+    while (t--) {
+        solve();
+    }
+}
