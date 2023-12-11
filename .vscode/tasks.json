@@ -6,7 +6,11 @@
             "command": "E:/msys32/mingw64/bin/g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
-                "-g",
+                "-std=c++11",
+                "-std=gnu++11",
+                "-O2",
+                "-Wall",
+                "-Wextra",
                 "${file}",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"

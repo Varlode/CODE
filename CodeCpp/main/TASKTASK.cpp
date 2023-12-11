@@ -49,7 +49,8 @@ struct BIT {
         set< pair<int, int> > ans;
         for (auto &p : get(v)) if (p.second >= u)
             ans.insert(p);
-        for (auto &p : ans) cerr << p.first << ' '; cerr << '\n';
+        for (auto &p : ans) cerr << p.first << ' '; 
+        cerr << '\n';
         pair<int, int> ret = *ans.begin();
         cout << ret.first << '\n';
     }
