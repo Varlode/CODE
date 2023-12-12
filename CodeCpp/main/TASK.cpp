@@ -10,55 +10,72 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int N = 15001;
-int n, k, a[N], f[2*N], g[2*N];
-vector<int> val;
-void reset() {
-    val.clear(); val.push_back(0);
-    memset(f, 0, sizeof f);
-    memset(g, 0x3f, sizeof g);
-}
+const int N = 1e5+10;
+int n, q, a[N];
 
-void check(int m) {
-    reset();
-    long long sum = 0;
-    for (int i = 1; i <= n; i++) {
-        sum += a[i];
-        val.push_back(sum);
-        val.push_back(sum-m);
+struct SEQMENT {
+    long long st[N*4], lazy[N*4];
+
+    void down(int i) {
+        st[i*2] += lazy[i];
+        lazy[i*2] += lazy[i];
+
+        st[i*2+1] += lazy[i];
+        lazy[i*2+1] += lazy[i];
+
+        lazy[i] = 0;
     }
-    sort(val.begin(), val.end());
-    val.erase(unique(val.begin(), val.end()), val.end());
 
-    int sz = (int) val.size();
-
-    for (int i = 1; i <= n; i++) {
-        sum += a[i];
-        int iSum = lower_bound(val.begin(), val.end(), sum) - val.begin() + 1;
-        int iSumM = lower_bound(val.begin(), val.end(), sum-m) - val.begin() + 1;
-        f[i] = treeMx.get(1, 1, sz, iSumM - iSum);
+    void build(int i, int l, int r) {
+        if (l == r) {
+            st[i] = a[l];
+            lazy[i] = 0;
+            return;
+        }
+        int m = (l+r) >> 1;
+        build(i*2, l, m);
+        build(i*2+1, m+1, r);
+        st[i] = max(st[i*2], st[i*2+1]);
     }
-}
+
+    void upd(int i, int l, int r, int u, int v, int k) {
+        if (r < u || v < l) return;
+        if (u <= l && r <= v) {
+            st[i] += k;
+            lazy[i] += k;
+            return;
+        }
+        int m = (l+r) >> 1;
+
+        down(i);
+
+        upd(i*2, l, m, u, v, k);
+        upd(i*2+1, m+1, r, u, v, k);
+        st[i] = max(st[i*2], st[i*2+1]);
+    }
+
+    long long get(int i, int l, int r, int u, int v) {
+        if (r < u || v < l) return -1e9;
+        if (u <= l && r <= v) return st[i];
+        int m = (l+r) >>  1;
+        down(i);
+        return max(get(i*2, l, m, u, v), get(i*2+1, m+1, r, u, v));
+    }
+} myTree;
 
 void solve() {
-    cin >> n >> k;
-    int mx = 0, mn = 1e9;
-    for (int i = 1; i <= n; i++) {
-        cin >> a[i];
-        mx = max(a[i], mx);
-        mn = min(a[i], mn);
-    }
-
-    int l = min(mn*n, mn), r = max(mx, mx*mn);
-    while (l <= r) {
-        int m = (l+r) >> 1;
-        if (check(m)) {
-            ans = m;
-            r = m-1;
+    cin >> n;
+    for (int i = 1; i <= n; i++) cin >> a[i];
+    myTree.build(1, 1, n);
+    cin >> q;
+    for (int i = 1; i <= q; i++) {
+        int p, x, y, val; cin >> p >> x >> y;
+        if (p == 1) {
+            cin >> val;
+            myTree.upd(1, 1, n, x, y, val);
         }
-        else l = m+1;
+        else cout << myTree.get(1, 1, n, x, y) << '\n';
     }
-    cout << ans;
 }
 
 int main() {
