@@ -10,13 +10,19 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int N = 1e6+1;
-int n, a[N], l[N], r[N], ans;
+const int N = 4e4;
+int n, a[N], l[N], r[N];
+
+void reset() {
+    a[0] = a[n+1] = 0;
+    memset(l, 0, sizeof l);
+    memset(r, 0, sizeof r);
+}
 
 void solve() {
     cin >> n;
     for (int i = 1; i <= n; i++) cin >> a[i];
-
+    reset();
     vector<int> s;
     s.push_back(0);
     for (int i = 1; i <= n; i++) {
@@ -24,7 +30,6 @@ void solve() {
         l[i] =s.back();
         s.push_back(i);
     }
-
     s.clear();
     s.push_back(n+1);
     for (int i = n; i >= 1; i--) {
@@ -33,11 +38,21 @@ void solve() {
         s.push_back(i);
     }
 
+    int mx = 0, ans_l = 0, ans_r = 0;
     for (int i = 1; i <= n; i++) {
-        if (r[i]-l[i]-1 < a[i]) continue;
-        ans = max(ans, min(a[i], r[i]-l[i]-1));
+        if (mx < a[i]*(r[i]-l[i]-1)) {
+            mx = a[i]*(r[i]-l[i]-1);
+            ans_l = l[i]+1;
+            ans_r = r[i]-1;
+        }
+        else if (mx == a[i]*(r[i]-l[i]-1)) {
+            if (ans_l > l[i]+1) {
+                ans_l = l[i]+1;
+                ans_r = r[i]-1;
+            }
+        }
     }
-    cout << ans << '\n';
+    cout << mx << ' ' << ans_l << ' ' << ans_r << '\n';
 }
 
 int main() {
@@ -48,7 +63,7 @@ int main() {
         freopen(TASK".out", "w", stdout);
     }
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--) {
         solve();
     }
