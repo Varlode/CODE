@@ -3,21 +3,22 @@
 *.o
 *.txt
 *.xml
-*.rar
-*.pdf
 *.yml
 *.iml
+*.in
 *.inp
 *.out
 *.pas
-*.doc
-*.docx
 *.tmp
-*.ppt
-*.pptx
-*.xls
-*.xlsx
 *.cfg
 DayHoc/
 ChamDiem/
 2023 autumn contest/
+KG contest 2023/
+LQD CUP/
+Yugi/
+truongdongdalat2023/
+haaarcascae/
+SangTao_TinHoc/
+main/
+BoiGioiTime/

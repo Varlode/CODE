@@ -10,36 +10,21 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n;
-string s;
+const int N = 1e6+1;
+const int MOD = 1e9+7;
+int f[N], g[N], n;
+
+void init() {
+    f[1] = g[1] = 1;
+    for (int i = 2; i < N; i++) {
+        f[i] = (f[i-1]*4ll % MOD + g[i-1]) % MOD;
+        g[i] = (f[i-1] + g[i-1]*2ll % MOD) % MOD;
+    }
+}
 
 void solve() {
-    cin >> s;
-    n = s.size();
-    s = '~' + s;
-    int sum = 0;
-    for (int i = 1; i <= n; i++) sum += (s[i]-'0');
-    sum %= 3;
-    if (sum == 0) {
-        while (s[i] == '9' && i <= n) i++;
-        if (s[i] + 9 <= '9') s[i] += 9;
-        if (s[i] + 6 <= '9') s[i] += 6;
-        if (s[i] + 3 <= '9') s[i] += 3;
-    }
-    else if (sum == 1) {
-        while (s[i] == '9' && i <= n) i++;
-
-        if (s[i] + 8 <= '9') s[i] += 8;
-        if (s[i] + 5 <= '9') s[i] += 5;
-        if (s[i] + 2 <= '9') s[i] += 2;
-    }
-    else if (sum == 2) {
-        while (s[i] == '9' && i <= n) i++;
-        if (s[i] + 7 <= '9') s[i] += 7;
-        if (s[i] + 4 <= '9') s[i] += 4;
-        if (s[i] + 1 <= '9') s[i] += 1;
-    }
-    cout << s;
+    cin >> n;
+    cout << (f[n]+g[n]) % MOD << '\n';
 }
 
 int main() {
@@ -50,7 +35,8 @@ int main() {
         freopen(TASK".out", "w", stdout);
     }
     int t = 1;
-    // cin >> t;
+    cin >> t;
+    init();
     while (t--) {
         solve();
     }
