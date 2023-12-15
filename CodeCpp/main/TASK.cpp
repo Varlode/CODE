@@ -10,34 +10,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int N = 1e6+1;
-int n, a[N], l[N], r[N], ans;
+int n;
+string s;
 
 void solve() {
-    cin >> n;
-    for (int i = 1; i <= n; i++) cin >> a[i];
-
-    vector<int> s;
-    s.push_back(0);
-    for (int i = 1; i <= n; i++) {
-        while (s.size() && a[s.back()] >= a[i]) s.pop_back();
-        l[i] =s.back();
-        s.push_back(i);
+    cin >> s;
+    n = s.size();
+    s = '~' + s;
+    int sum = 0;
+    for (int i = 1; i <= n; i++) sum += (s[i]-'0');
+    sum %= 3;
+    if (sum == 0) {
+        while (s[i] == '9' && i <= n) i++;
+        if (s[i] + 9 <= '9') s[i] += 9;
+        if (s[i] + 6 <= '9') s[i] += 6;
+        if (s[i] + 3 <= '9') s[i] += 3;
     }
+    else if (sum == 1) {
+        while (s[i] == '9' && i <= n) i++;
 
-    s.clear();
-    s.push_back(n+1);
-    for (int i = n; i >= 1; i--) {
-        while (s.size() && a[s.back()] >= a[i]) s.pop_back();
-        r[i] = s.back();
-        s.push_back(i);
+        if (s[i] + 8 <= '9') s[i] += 8;
+        if (s[i] + 5 <= '9') s[i] += 5;
+        if (s[i] + 2 <= '9') s[i] += 2;
     }
-
-    for (int i = 1; i <= n; i++) {
-        if (r[i]-l[i]-1 < a[i]) continue;
-        ans = max(ans, min(a[i], r[i]-l[i]-1));
+    else if (sum == 2) {
+        while (s[i] == '9' && i <= n) i++;
+        if (s[i] + 7 <= '9') s[i] += 7;
+        if (s[i] + 4 <= '9') s[i] += 4;
+        if (s[i] + 1 <= '9') s[i] += 1;
     }
-    cout << ans << '\n';
+    cout << s;
 }
 
 int main() {
@@ -47,9 +49,9 @@ int main() {
         freopen(TASK".inp", "r", stdin);
         freopen(TASK".out", "w", stdout);
     }
-    int T = 1;
-    // cin >> T;
-    while (T--) {
+    int t = 1;
+    // cin >> t;
+    while (t--) {
         solve();
     }
 }
