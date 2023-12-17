@@ -1,0 +1,79 @@
+/*
+          _
+   ______/ \-.   _         _ __ _         _    _
+.-/     (    o\_//        / l..l \       / >--< \
+ l  ___  \_/\---'         \/ ll \/       \l  \ l/
+ l_ll  l_ll                l_''_l         l_ll_l
+
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+const int N = 1e5+10;
+int n, m, q;
+
+struct SEQMENT {
+    long long st[N*4], lazy[N*4];
+
+    void down(int i) {
+        st[i*2] += lazy[i];
+        lazy[i*2] += lazy[i];
+
+        st[i*2+1] += lazy[i];
+        lazy[i*2+1] += lazy[i];
+
+        lazy[i] = 0;
+    }
+
+    void upd(int i, int l, int r, int u, int v, int k) {
+        if (r < u || v < l) return;
+        if (u <= l && r <= v) {
+            st[i] += k;
+            lazy[i] += k;
+            return;
+        }
+        int m = (l+r) >> 1;
+
+        down(i);
+
+        upd(i*2, l, m, u, v, k);
+        upd(i*2+1, m+1, r, u, v, k);
+        st[i] = max(st[i*2], st[i*2+1]);
+    }
+
+    long long get(int i, int l, int r, int u, int v) {
+        if (r < u || v < l) return -1e9;
+        if (u <= l && r <= v) return st[i];
+        int m = (l+r) >>  1;
+        down(i);
+        return max(get(i*2, l, m, u, v), get(i*2+1, m+1, r, u, v));
+    }
+} myTree;
+
+void solve() {
+    cin >> n >> m;
+    for (int i = 1; i <= m; i++) {
+        int u, v, k; cin >> u >> v >> k;
+        myTree.upd(1, 1, n, u, v, k);
+    }
+    cin >> q;
+    for (int i = 1; i <= q; i++) {
+        int u, v; cin >> u >> v;
+        cout << myTree.get(1, 1, n, u, v) << '\n';
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+    #define TASK "TASK"
+    if (fopen(TASK".inp", "r")) {
+        freopen(TASK".inp", "r", stdin);
+        freopen(TASK".out", "w", stdout);
+    }
+    int t = 1;
+    // cin >> t;
+    while (t--) {
+        solve();
+    }
+}
