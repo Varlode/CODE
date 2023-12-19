@@ -1,43 +1,65 @@
-#include <bits/stdc++.h>
+/*
+          _
+   ______/ \-.   _         _ __ _         _    _
+.-/     (    o\_//        / l..l \       / >--< \
+ l  ___  \_/\---'         \/ ll \/       \l  \ l/
+ l_ll  l_ll                l_''_l         l_ll_l
 
+*/
+
+#include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
+const int N = 101;
+int n, m, S;
+int a[N][N], mark[26];
 
-//    freopen("input.txt", "r", stdin);
-//    freopen("output.txt", "w", stdout);
-    
-    int m, n, k, res = 0;
-    cin >> m >> n >> k;
-    int count[26][m + 1][n + 1];
-    memset(count, 0 , sizeof(count));
-    
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            char a; cin >> a;
-            for (int l = 0; l < 26; l++) count[l][i][j] = count[l][i][j - 1] + count [l][i - 1][j] - count[l][i - 1][j - 1];
-            count[a - 65][i][j]++;
-        }
-    }
-    
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            for (int z = i; z <= m; z++) {
-                for (int t = j; t <= n; t++) {
-                    int krect = 0;
-                    for (int l = 0; l < 26; l++)
-                        if (count[l][z][t] - count[l][z][j - 1] - count [l][i - 1][t] + count[l][i - 1][j - 1] > 0) {
-							krect++;
-						} 
-                    if (krect == k) {
-						res++;
-					}
-                }
+long long calc(int s) {
+    cerr << s << '\n';
+    long long res = 0;
+    for (int i = 1; i <= m; i++) for (int j = i; j <= m; j++) {
+        int cnt = 0, l = 1;
+        memset(mark, 0, sizeof mark);
+        for (int r = 1; r <= n; r++) {
+            for (int k = i; k <= j; k++) {
+                cnt += (mark[a[k][r]] == 0);
+                mark[a[k][r]]++;
             }
+
+            while (l <= r && cnt > s) {
+                for (int k = i; k <= j; k++) {
+                    mark[a[k][l]]--;
+                    cnt -= (mark[a[k][l]] == 0);
+                }
+                l++;
+            }
+            res += r - l + 1;
         }
     }
-    
-    cout << res;
+    return res;
+}
+
+void solve() {
+    cin >> m >> n >> S;
+    for (int i = 1; i <= m; i++) for (int j = 1; j <= n; j++) {
+        char c; cin >> c;
+        a[i][j] = c-'A';
+        cerr << a[i][j] << ' ';
+        if (j == n) cerr << '\n';
+    }
+    cout << calc(S) - calc(S-1);
+}
+
+int main() {
+    ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+    #define TASK "TASK"
+    if (fopen(TASK".inp", "r")) {
+        freopen(TASK".inp", "r", stdin);
+        freopen(TASK".out", "w", stdout);
+    }
+    int t = 1;
+    // cin >> t;
+    while (t--) {
+        solve();
+    }
 }
